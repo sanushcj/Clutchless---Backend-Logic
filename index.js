@@ -1,20 +1,25 @@
 const express = require('express');
-const helloRouter = require('./routes/auth');  
 const mongoose = require('mongoose');
+const authRouter = require('./routes/auth');
 
 //port no
 const PORT = 3000;
 
 
-
+// Create Express app
 const app = express();
 
-
+// MongoDB connection URI
 const mongoUri = "mongodb+srv://clutchlessman:megapass@clutchlesscluster.mfnbpqt.mongodb.net/?appName=ClutchlessCluster";
 
 
+//json parsing
+
 // middleware to parse JSON
-app.use(helloRouter);
+app.use(express.json());
+
+// Use authentication routes
+app.use(authRouter);
 
 // Connect to MongoDB
 mongoose.connect(mongoUri)

@@ -1,6 +1,7 @@
 const express = require('express');
 const authRouter = express.Router();
 const User = require('../models/user');
+const bcrypt = require('bcryptjs'); 
 // Define your authentication routes here
 
 // Example route
@@ -15,7 +16,11 @@ if (existingUser) {
 }
 
 // Create new user
-const newUser = new User({ username, email, password });
+
+const salt = await bcrypt.genSalt(12);
+const hashedPassword = await bcrypt.hash(password, salt);
+
+const newUser = new User({ username, email, password: hashedPassword });
 await newUser.save();
 
 res.status(201).json({ message: 'User created successfully' }); 
@@ -28,6 +33,11 @@ res.status(201).json({ message: 'User created successfully' });
  }
 
 });
+
+
+console.log("Auth routes loaded");
+
+module.exports = authRouter;
 
 
 
